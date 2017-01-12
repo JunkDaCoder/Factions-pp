@@ -23,21 +23,33 @@ class MainClass extends PluginBase implements Listener {
     public function onDisable() {
         $this->getLogger()->info(TextFormat::YELLOW . "[FactionsPP] Unloading!");
     }
-
-    public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
-        switch ($command->getName()) {
-        case "factionspp":
-            $subcmd = strtolower($args[0]);
-            if($subcmd == "create") {
+##BASIC FILE SAVING METHODS IMPLMENT \FACTIONS FOLDER SOON
+    public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
+    if($cmd->getName() == "factionspp"){
+        if(empty($args)){
+            $sender->sendMessage("Soon");
+        }
+        if(count($args == 2)){
+            if($args[0] == "create"){
+                if(!isset($args[1])){
+                    $sender->sendmessage("do /f create (name)");
+                }else{
+                     $file = ($this->getDataFolder().$args[1].".json");
+                    if(!file_exists($file)){
+                $this->facs = new Config($this->getDataFolder() . $args[1].".json", Config::JSON);
                 $cfgfac = $args[1];
-                $write = array("name" => $cfgfac, "Leader" => $sender, "Officers" => array(), "Members" => array());
-                $this->facs->set($cfgfac, $write);
+                $this->facs->set("Name", $args[1]);
+                $this->facs->set("Leader", $sender->getName());
+                $this->facs->set("Officers", array());
+                $this->facs->set("Members", array());
                 $this->facs->save();
+                $sender->sendmessage("faction made dawg");
             }
-            break;
-        default:
-                return false;
         }
     }
+
+}
+}
+}
 
 }
